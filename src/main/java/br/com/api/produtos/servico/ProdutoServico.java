@@ -25,17 +25,22 @@ public class ProdutoServico {
         return repositorio.findAll();
     }
 
-    public ResponseEntity<?> cadastrar(ProdutoModelo produtoModelo) {
+    public ResponseEntity<?> cadastrarOuAlterar(ProdutoModelo produtoModelo, String acao) {
         if (produtoModelo.getNome().equals("")) {
-           respostaModelo.setMensagem("Nome obrigatório"); 
-           return new ResponseEntity<RespostaModelo>(respostaModelo, HttpStatus.BAD_REQUEST);
+            respostaModelo.setMensagem("Nome obrigatório");
+            return new ResponseEntity<RespostaModelo>(respostaModelo, HttpStatus.BAD_REQUEST);
         } else if (produtoModelo.getMarca().equals("")) {
-            respostaModelo.setMensagem("Marca obrigatória"); 
-           return new ResponseEntity<RespostaModelo>(respostaModelo, HttpStatus.BAD_REQUEST);
+            respostaModelo.setMensagem("Marca obrigatória");
+            return new ResponseEntity<RespostaModelo>(respostaModelo, HttpStatus.BAD_REQUEST);
         } else {
             ProdutoModelo saved = repositorio.save(produtoModelo);
-            return new ResponseEntity<ProdutoModelo>(saved, HttpStatus.CREATED);
+            if (acao.equals("cadastrar")) {
+                return new ResponseEntity<ProdutoModelo>(saved, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<ProdutoModelo>(saved, HttpStatus.OK);
+            }
+
         }
     }
-    
+
 }
